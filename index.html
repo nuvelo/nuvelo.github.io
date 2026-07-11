@@ -842,12 +842,13 @@
       document.documentElement.setAttribute('data-theme', theme);
     }
 
-    // Lang: localStorage → navigator.language → en
+    // Lang: URL param → localStorage → navigator.language → en
+    var urlLang = new URLSearchParams(window.location.search).get('lang');
     var saved = localStorage.getItem('lang');
     var navRaw = (navigator.language || '').slice(0, 2).toLowerCase();
     var navMap = { kk: 'kz', uk: 'ru', be: 'ru' };
     var nav = navMap[navRaw] || navRaw;
-    var lang = (saved && T[saved]) ? saved : (T[nav] ? nav : 'en');
+    var lang = (urlLang && T[urlLang]) ? urlLang : (saved && T[saved]) ? saved : (T[nav] ? nav : 'en');
     applyLang(lang);
 
     // Lang switcher clicks
