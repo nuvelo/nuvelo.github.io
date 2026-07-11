@@ -854,6 +854,13 @@
       document.documentElement.setAttribute('data-theme', theme);
     }
 
+    // Source tracking
+    var srcParam = new URLSearchParams(window.location.search).get('s');
+    if (srcParam && typeof ym !== 'undefined') {
+      var srcMap = { ib: 'instagram_bio', id: 'instagram_dm', tb: 'telegram_bio', td: 'telegram_dm', yb: 'youtube_bio', kb: 'tiktok_bio', kd: 'tiktok_dm' };
+      ym(110599482, 'params', { source: srcMap[srcParam] || srcParam });
+    }
+
     // Lang: URL param → localStorage → navigator.language → en
     var urlLang = new URLSearchParams(window.location.search).get('lang');
     var saved = localStorage.getItem('lang');
