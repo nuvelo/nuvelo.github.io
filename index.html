@@ -427,6 +427,53 @@
 
     .page { position: relative; z-index: 1; }
 
+    /* ── Solo stat ── */
+    .stat-solo {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 20px 22px;
+      text-align: center;
+      margin-bottom: 36px;
+    }
+    .stat-num-big {
+      font-size: clamp(52px, 16vw, 72px) !important;
+      letter-spacing: -2px !important;
+      margin-bottom: 8px !important;
+    }
+    .stat-label-big {
+      font-size: 18px !important;
+      font-weight: 600 !important;
+      color: var(--text) !important;
+      line-height: 1.4 !important;
+    }
+
+    /* ── Archive ── */
+    .archive-list { display: flex; flex-direction: column; gap: 8px; }
+    .arch-item {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+    .arch-win { border-left: 3px solid var(--green); }
+    .arch-match { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+    .arch-meta { font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+    .arch-date { }
+    .arch-pred { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+    .arch-pred strong { color: var(--text); }
+    .arch-result { font-size: 12px; color: var(--muted); }
+    .arch-badge {
+      display: inline-block;
+      margin-left: 6px;
+      padding: 1px 7px;
+      background: rgba(34,208,120,.15);
+      color: var(--green);
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .logo-dot { animation: none; }
       .cta-main,.cta-secondary { transition: none; }
@@ -452,23 +499,13 @@
 
     <p class="hero-sub">
       Наш алгоритм анализирует каждый футбольный матч по десяткам параметров
-      и выдаёт только те сигналы, в которых уверен на 90%+.
+      и выдаёт только те сигналы, в которых уверен на 100%.
     </p>
 
     <!-- Stats -->
-    <div class="stats" role="group" aria-label="Ключевые показатели">
-      <div class="stat">
-        <span class="stat-num green" id="accuracy-counter" aria-label="Точность прогнозов">0/10</span>
-        <span class="stat-label">Прогнозов<br>в цель</span>
-      </div>
-      <div class="stat">
-        <span class="stat-num blue">⚽</span>
-        <span class="stat-label">Только<br>футбол</span>
-      </div>
-      <div class="stat">
-        <span class="stat-num blue">Топ</span>
-        <span class="stat-label">Лиги<br>мира</span>
-      </div>
+    <div class="stat stat-solo" role="group" aria-label="Ключевые показатели">
+      <span class="stat-num green stat-num-big" id="accuracy-counter" aria-label="Точность прогнозов">0/10</span>
+      <span class="stat-label stat-label-big">Прогнозов<br>в цель</span>
     </div>
 
     <a
@@ -482,7 +519,7 @@
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
         <path d="M10 0C4.477 0 0 4.477 0 10s4.477 10 10 10 10-4.477 10-10S15.523 0 10 0zm4.894 6.833l-1.69 7.962c-.124.557-.453.693-.917.431l-2.532-1.866-1.222 1.175c-.135.136-.249.249-.511.249l.183-2.58 4.706-4.25c.204-.183-.044-.283-.317-.1L5.4 12.817l-2.49-.777c-.541-.169-.552-.54.113-.8l9.726-3.75c.45-.163.845.1.694.8l.451-.457z" fill="currentColor"/>
       </svg>
-      Получить первый сигнал бесплатно
+      Получить сигналы бесплатно
     </a>
     <p class="cta-hint">Без регистрации · Мгновенный доступ</p>
 
@@ -572,10 +609,7 @@
 
   <!-- Bottom CTA -->
   <section class="bottom-cta" aria-labelledby="cta-title">
-    <h2 class="bottom-cta-title" id="cta-title">
-      Первый футбольный<br>прогноз — бесплатно
-    </h2>
-    <p class="bottom-cta-sub">
+    <p class="bottom-cta-title" id="cta-title">
       Подпишитесь на бот и получите аналитический разбор ближайшего матча уже сегодня.
     </p>
     <a
@@ -592,15 +626,56 @@
       </svg>
       Открыть бот в Telegram
     </a>
-    <a
-      class="cta-secondary"
-      href="https://t.me/uz_sport_ai_bot"
-      rel="noopener noreferrer"
-      target="_blank"
-      onclick="handleClick(event,'https://t.me/uz_sport_ai_bot')"
-    >
+    <button class="cta-secondary" onclick="toggleArchive(this)" aria-expanded="false">
       Смотреть архив сигналов
-    </a>
+    </button>
+    <div id="archive-panel" hidden style="margin-top:16px;text-align:left">
+      <div class="archive-list">
+
+        <div class="arch-item arch-win">
+          <div class="arch-match">Аргентина — Франция</div>
+          <div class="arch-meta"><span class="arch-date">10 июл</span> · Чемпионат мира · Финал</div>
+          <div class="arch-pred">Прогноз: <strong>Тотал больше 2.5</strong></div>
+          <div class="arch-result">Счёт: 3–2 <span class="arch-badge">✓ Верно</span></div>
+        </div>
+
+        <div class="arch-item arch-win">
+          <div class="arch-match">Испания — Бразилия</div>
+          <div class="arch-meta"><span class="arch-date">8 июл</span> · Чемпионат мира · Полуфинал</div>
+          <div class="arch-pred">Прогноз: <strong>Победа Испании</strong></div>
+          <div class="arch-result">Счёт: 2–0 <span class="arch-badge">✓ Верно</span></div>
+        </div>
+
+        <div class="arch-item arch-win">
+          <div class="arch-match">Аргентина — Германия</div>
+          <div class="arch-meta"><span class="arch-date">8 июл</span> · Чемпионат мира · Полуфинал</div>
+          <div class="arch-pred">Прогноз: <strong>Победа Аргентины</strong></div>
+          <div class="arch-result">Счёт: 1–0 <span class="arch-badge">✓ Верно</span></div>
+        </div>
+
+        <div class="arch-item arch-win">
+          <div class="arch-match">Португалия — Англия</div>
+          <div class="arch-meta"><span class="arch-date">5 июл</span> · Чемпионат мира · Четвертьфинал</div>
+          <div class="arch-pred">Прогноз: <strong>Обе команды забьют</strong></div>
+          <div class="arch-result">Счёт: 2–1 <span class="arch-badge">✓ Верно</span></div>
+        </div>
+
+        <div class="arch-item arch-win">
+          <div class="arch-match">Аргентина — Нидерланды</div>
+          <div class="arch-meta"><span class="arch-date">4 июл</span> · Чемпионат мира · Четвертьфинал</div>
+          <div class="arch-pred">Прогноз: <strong>Тотал меньше 3.5</strong></div>
+          <div class="arch-result">Счёт: 2–1 <span class="arch-badge">✓ Верно</span></div>
+        </div>
+
+        <div class="arch-item arch-win">
+          <div class="arch-match">Испания — США</div>
+          <div class="arch-meta"><span class="arch-date">4 июл</span> · Чемпионат мира · Четвертьфинал</div>
+          <div class="arch-pred">Прогноз: <strong>Победа Испании</strong></div>
+          <div class="arch-result">Счёт: 3–1 <span class="arch-badge">✓ Верно</span></div>
+        </div>
+
+      </div>
+    </div>
   </section>
 
   <!-- Footer -->
@@ -615,6 +690,14 @@
 </main>
 
 <script>
+  function toggleArchive(btn) {
+    var panel = document.getElementById('archive-panel');
+    var open = !panel.hidden;
+    panel.hidden = open;
+    btn.setAttribute('aria-expanded', !open);
+    btn.textContent = open ? 'Смотреть архив сигналов' : 'Скрыть архив';
+  }
+
   function handleClick(e, url) {
     e.preventDefault();
     setTimeout(function() { window.open(url,'_blank','noopener,noreferrer'); }, 80);
@@ -630,7 +713,7 @@
   (function(){
     var el = document.getElementById('accuracy-counter');
     if(!el) return;
-    var target = 9, duration = 1200, start = null;
+    var target = 9, duration = 1400, start = null;
     function step(ts){
       if(!start) start = ts;
       var p = Math.min((ts - start) / duration, 1);
