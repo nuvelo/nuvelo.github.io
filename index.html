@@ -842,10 +842,12 @@
       document.documentElement.setAttribute('data-theme', theme);
     }
 
-    // Lang: localStorage → navigator.language → ru
+    // Lang: localStorage → navigator.language → en
     var saved = localStorage.getItem('lang');
-    var nav = (navigator.language || '').slice(0, 2).toLowerCase();
-    var lang = (saved && T[saved]) ? saved : (T[nav] ? nav : 'ru');
+    var navRaw = (navigator.language || '').slice(0, 2).toLowerCase();
+    var navMap = { kk: 'kz', uk: 'ru', be: 'ru' };
+    var nav = navMap[navRaw] || navRaw;
+    var lang = (saved && T[saved]) ? saved : (T[nav] ? nav : 'en');
     applyLang(lang);
 
     // Lang switcher clicks
