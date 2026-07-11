@@ -850,6 +850,7 @@
     var nav = navMap[navRaw] || navRaw;
     var lang = (urlLang && T[urlLang]) ? urlLang : (saved && T[saved]) ? saved : (T[nav] ? nav : 'en');
     applyLang(lang);
+    if (urlLang) { history.replaceState(null, '', window.location.pathname); }
 
     // Lang switcher clicks
     document.querySelectorAll('.lang-btn').forEach(function(btn) {
