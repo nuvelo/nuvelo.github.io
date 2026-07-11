@@ -842,6 +842,7 @@
 
   function handleClick(e, url) {
     e.preventDefault();
+    if (typeof ym !== 'undefined') { ym(110599482, 'reachGoal', 'click_bot'); }
     setTimeout(function() { window.open(url, '_blank', 'noopener,noreferrer'); }, 80);
   }
 
